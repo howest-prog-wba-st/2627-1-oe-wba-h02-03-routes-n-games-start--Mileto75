@@ -19,7 +19,17 @@ app.UseStaticFiles();
 app.UseRouting();
 
 app.UseAuthorization();
-
+//Put custom routes here
+app.MapControllerRoute(
+    name: "allGames",//route name
+    pattern: "games/all",//url => https://localhost:5001/games/all
+    defaults: new {Controller = "Games",Action = "Index" }
+    );
+app.MapControllerRoute(
+    name : "gameInfo",
+    pattern: "games/{id:int}",
+    defaults: new {Controller = "Games", Action = "ShowGame" } 
+    );
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");

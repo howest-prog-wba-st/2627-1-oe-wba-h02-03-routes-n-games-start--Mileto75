@@ -2,6 +2,7 @@
 using System.Text;
 using Wba.Oefening.Games.Core.Entities;
 using Wba.Oefening.Games.Core.Repositories;
+using Wba.Oefening.Games.Web.Services;
 
 namespace Wba.Oefening.Games.Web.Controllers
 {
@@ -9,13 +10,15 @@ namespace Wba.Oefening.Games.Web.Controllers
     {
         //declare a gamerepository
         private readonly GameRepository _gameRepository = new();
+        //declare the service class
+        private readonly FormatGameService _formatGameService = new FormatGameService();
 
         public IActionResult Index()
         {
             //get the data(all the games)
             var games = _gameRepository.GetGames();
             //use Format methods
-            var content = FormatGameInfo(games);
+            var content = _formatGameService.FormatGameInfo(games);
             //send to browser
             return Content(content,"text/html");
         }
@@ -31,33 +34,9 @@ namespace Wba.Oefening.Games.Web.Controllers
                 return Content("NotFound","text/html");
             }
             //format the game
-            var content = FormatGameInfo(game);
+            var content = _formatGameService.FormatGameInfo(game);
             //send to browser
             return Content(content, "text/html");
-        }
-        
-        private string FormatGameInfo(Game game)
-        {
-            StringBuilder stringBuilder = new();
-            stringBuilder.Append("--------------------------");
-            stringBuilder.Append("<ul>");
-            stringBuilder.Append($"<li>Id : {game.Id}</li>");
-            stringBuilder.Append($"<li>Title : {game.Title}</li>");
-            stringBuilder.Append($"<li>Developer : {game.Developer.Name}</li>");
-            stringBuilder.Append($"<li>Rating : {game.Rating ?? 0}</li>");
-            stringBuilder.Append("</ul>");
-            stringBuilder.Append("--------------------------</br>");
-            return stringBuilder.ToString();
-        }
-        private string FormatGameInfo(IEnumerable<Game> games)
-        {
-            StringBuilder stringBuilder = new();
-            foreach (var game in games)
-            {
-                //call the FormatGame(Game game) method
-                stringBuilder.Append(FormatGameInfo(game));
-            }
-            return stringBuilder.ToString();
         }
     }
 }
