@@ -17,7 +17,8 @@ namespace Wba.Oefening.Games.Core.Repositories
                     Title = "Wolfenstein Colossus",
                     Developer =
                         developerRepository.GetDevelopers().
-                            First(dev => dev.Id == 1)
+                            First(dev => dev.Id == 1),
+                    Rating = 1
                 },
                 new Game
                 {
